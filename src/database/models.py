@@ -10,6 +10,6 @@ class Contacts(Base):
     id = Column(Integer, primary_key=True, autoincrement=True)
     first_name = Column(String(100), nullable=False)
     last_name = Column(String(100), nullable=False)
-    mail = Column(String(100), unique=True, nullable=False)
+    email = Column(String(100), unique=True, nullable=False)
     phone = Column(String(20), unique=True, nullable=False)
     birthday = Column(DateTime, nullable=True)

@@ -1,10 +1,44 @@
-
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, status
 from src.database.db import get_db
+from src.repository import contacts as repository
+from src.schemas import contacts as schemas
 
 router = APIRouter(prefix="/contacts", tags=["contacts"])
 
-@router.get("/")
 
-async def get_contacts(db = Depends(get_db)):
-  return {"message": "get contacts"}
+@router.get("/", name="List of contacts")
+async def get_contacts(db=Depends(get_db)):
+    contacts = await repository.get_contacts(db)
+    return contacts
+
+
+@router.post(
+    "/", response_model=schemas.ContactResponse, status_code=status.HTTP_201_CREATED
+)
+async def create_contact(body: schemas.ContactModelRegister, db=Depends(get_db)):
+    contact = await repository.create_contact(body, db)
+    return contact
+
+
+@router.get("/{id}", name="Get contact by id")
+async def get_contact_by_id(id: int, db=Depends(get_db)):
+    contact = await repository.get_contact_by_id(id, db)
+    return contact
+
+
+@router.put(
+    "/{id}", name="Update contact by id", response_model=schemas.ContactResponse
+)
+async def update_contact(
+    id: int, body: schemas.ContactModelRegister, db=Depends(get_db)
+):
+    contact = await repository.update_contact(id, body, db)
+    return contact
+
+
+@router.delete(
+    "/{id}", name="Delete contact by id", response_model=schemas.ContactResponse
+)
+async def delete_contact(id: int, db=Depends(get_db)):
+    contact = await repository.delete_contact(id, db)
+    return contact
