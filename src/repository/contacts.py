@@ -85,16 +85,20 @@ async def get_upcoming_birthdays(db):
 
     if start_month == end_month:
         query = query.filter(
-            extract('month', Contacts.birthday) == start_month,
-            extract('day', Contacts.birthday) >= start_day,
-            extract('day', Contacts.birthday) <= end_day
+            extract("month", Contacts.birthday) == start_month,
+            extract("day", Contacts.birthday) >= start_day,
+            extract("day", Contacts.birthday) <= end_day,
         )
     else:
         query = query.filter(
-            ((extract('month', Contacts.birthday) == start_month) &
-             (extract('day', Contacts.birthday) >= start_day)) |
-            ((extract('month', Contacts.birthday) == end_month) &
-             (extract('day', Contacts.birthday) <= end_day))
+            (
+                (extract("month", Contacts.birthday) == start_month)
+                & (extract("day", Contacts.birthday) >= start_day)
+            )
+            | (
+                (extract("month", Contacts.birthday) == end_month)
+                & (extract("day", Contacts.birthday) <= end_day)
+            )
         )
 
     return query.all()

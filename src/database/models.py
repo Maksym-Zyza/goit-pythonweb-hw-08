@@ -4,8 +4,9 @@ from sqlalchemy.orm import relationship
 
 Base = declarative_base()
 
+
 class Contacts(Base):
-    __tablename__ = 'contacts'
+    __tablename__ = "contacts"
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     first_name = Column(String(100), nullable=False)
